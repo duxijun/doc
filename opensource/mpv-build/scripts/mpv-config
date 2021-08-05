@@ -1,0 +1,28 @@
+#!/bin/sh
+set -e
+
+BUILD="$(pwd)"
+
+USER_OPTS="$@"
+if test -f "$BUILD"/mpv_options ; then
+    USER_OPTS="$(cat "$BUILD"/mpv_options) $USER_OPTS"
+fi
+OPTIONS="$USER_OPTS"
+
+case "$PKG_CONFIG_PATH" in
+  '')
+    export PKG_CONFIG_PATH="$BUILD/build_libs/lib/pkgconfig"
+    ;;
+  *)
+    export PKG_CONFIG_PATH="$BUILD/build_libs/lib/pkgconfig:$PKG_CONFIG_PATH"
+    ;;
+esac
+
+# add missing private dependencies from libass.pc
+# this is necessary due to the hybrid static / dynamic nature of the build
+export LDFLAGS="$LDFLAGS $(pkg-config --libs fontconfig harfbuzz fribidi)"
+
+echo Using mpv options: $OPTIONS
+
+cd "$BUILD"/mpv
+python3 ./waf configure $OPTIONS

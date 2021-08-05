@@ -1,0 +1,5 @@
+mpv (2:2021.08.03.24357cb7b5) UNRELEASED; urgency=medium
+
+  * local build with ffmpeg 2:2021.08.04.82123e133d, libass 2:2021.07.10.5733e1c
+
+ -- Local User <localuser@localhost>  Thu, 05 Aug 2021 18:38:07 +0800
